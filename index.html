@@ -215,6 +215,13 @@
     margin: 0 0 12px;
   }
 
+  .detail-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0 0 12px;
+  }
+
   .detail-allergy {
     font-size: 0.85rem;
     color: var(--text-secondary);
@@ -300,6 +307,7 @@
     <div class="detail-body">
       <p class="detail-name" id="detailName"></p>
       <p class="detail-price" id="detailPrice"></p>
+      <p class="detail-desc" id="detailDesc"></p>
       <p class="detail-allergy" id="detailAllergy"></p>
     </div>
   </div>
@@ -318,10 +326,10 @@
     dragee: {
       image: "images/category-dragee.jpg",
       items: [
-        { name: "Chocolate Pecan Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
-        { name: "Chocolate Cashew Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
-        { name: "Chocolate Hazelnut Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
-        { name: "Chocolate Almond Dragee", price: "60 SAR", allergy: "Milk, Nuts" }
+        { name: "Chocolate Pecan Dragee", price: "51 SAR", description: "Roasted pecans wrapped in a smooth chocolate shell.", allergy: "Milk, Nuts" },
+        { name: "Chocolate Cashew Dragee", price: "60 SAR", description: "Whole roasted cashews coated in rich chocolate.", allergy: "Milk, Nuts" },
+        { name: "Chocolate Hazelnut Dragee", price: "60 SAR", description: "Toasted hazelnuts finished with a crisp chocolate coating.", allergy: "Milk, Nuts" },
+        { name: "Chocolate Almond Dragee", price: "60 SAR", description: "Crunchy roasted almonds dipped in smooth chocolate.", allergy: "Milk, Nuts" }
       ]
     },
     bar: {
@@ -397,6 +405,7 @@
   const detailImg = document.getElementById('detailImg');
   const detailName = document.getElementById('detailName');
   const detailPrice = document.getElementById('detailPrice');
+  const detailDesc = document.getElementById('detailDesc');
   const detailAllergy = document.getElementById('detailAllergy');
   const closeBtn = document.getElementById('closeBtn');
 
@@ -405,6 +414,8 @@
     detailImg.alt = item.name;
     detailName.textContent = item.name;
     detailPrice.textContent = item.price;
+    detailDesc.textContent = item.description || "";
+    detailDesc.style.display = item.description ? "block" : "none";
     detailAllergy.textContent = "Allergies: " + item.allergy;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
