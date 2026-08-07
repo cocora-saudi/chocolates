@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cocora Chocolates — Menu</title>
+<title>Cocora — The Saudi Touch of Chocolate Art</title>
 <style>
   :root {
-    --bg: #faf6f2;
-    --card-bg: #ffffff;
-    --border: #e8ddd4;
-    --text-primary: #2b1d14;
-    --text-secondary: #7a6a5c;
-    --accent: #6b3f2a;
+    --burgundy: #4a1220;
+    --burgundy-light: #5c1a2a;
+    --card-bg: #fdfaf5;
+    --border: #e8ddce;
+    --text-primary: #2b1810;
+    --text-secondary: #8a7362;
+    --gold: #c9a15a;
+    --cream: #f2e9d8;
   }
 
   * { box-sizing: border-box; }
@@ -19,80 +21,140 @@
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
+    background: var(--burgundy);
+    color: var(--cream);
   }
 
-  header {
+  .logo-wrap {
+    padding: 2rem 1rem 0.5rem;
     text-align: center;
-    padding: 2rem 1rem 1rem;
   }
 
-  header h1 {
-    font-size: 1.6rem;
+  .logo-wrap img {
+    max-width: 320px;
+    width: 70%;
+    height: auto;
+  }
+
+  .tagline {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 1.5rem;
+  }
+
+  .category-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 1rem 1rem;
+    max-width: 760px;
+    margin: 0 auto;
+    scrollbar-width: none;
+  }
+  .category-nav::-webkit-scrollbar { display: none; }
+
+  .category-nav a {
+    flex: 0 0 auto;
+    font-size: 0.8rem;
+    padding: 8px 16px;
+    border: 1px solid rgba(201,161,90,0.4);
+    border-radius: 999px;
+    color: var(--cream);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+  }
+
+  section.category {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 1rem;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(201,161,90,0.35);
+    padding-bottom: 8px;
+  }
+
+  .category-header h2 {
+    font-size: 1.3rem;
     font-weight: 600;
-    margin: 0 0 0.25rem;
-    letter-spacing: 0.02em;
+    margin: 0;
+    color: var(--cream);
   }
 
-  header p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin: 0;
+  .category-header .ar {
+    font-size: 1.1rem;
+    color: var(--gold);
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 14px;
-    padding: 1rem;
-    max-width: 720px;
-    margin: 0 auto;
+    gap: 12px;
   }
 
   .card {
     background: var(--card-bg);
-    border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .card:active {
-    transform: scale(0.97);
   }
 
   .card-img {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    background: var(--border);
     display: block;
+    background: var(--border);
+  }
+
+  .card-body {
+    padding: 10px 12px 12px;
   }
 
   .card-name {
     font-size: 0.85rem;
     font-weight: 600;
-    text-align: center;
-    padding: 10px 8px;
+    margin: 0 0 2px;
+    color: var(--text-primary);
+  }
+
+  .card-price {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
     margin: 0;
   }
 
-  /* Full-screen detail overlay */
+  .card-unit {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* Detail overlay */
   .overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(20, 12, 8, 0.75);
+    background: rgba(20, 8, 12, 0.8);
     z-index: 100;
     align-items: flex-end;
     justify-content: center;
   }
 
-  .overlay.open {
-    display: flex;
-  }
+  .overlay.open { display: flex; }
 
   .detail-sheet {
     background: var(--card-bg);
@@ -136,52 +198,100 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--burgundy);
   }
 
   .detail-name {
     font-size: 1.3rem;
     font-weight: 700;
     margin: 0 0 4px;
+    color: var(--text-primary);
   }
 
   .detail-price {
-    font-size: 1rem;
-    color: var(--accent);
-    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--burgundy);
+    font-weight: 700;
     margin: 0 0 12px;
   }
 
-  .detail-desc {
-    font-size: 0.95rem;
+  .detail-allergy {
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.5;
-    margin: 0 0 16px;
-  }
-
-  .fillings-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-secondary);
-    margin: 0 0 6px;
-    border-top: 1px solid var(--border);
-    padding-top: 14px;
-  }
-
-  .fillings-text {
-    font-size: 0.95rem;
     margin: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem 1rem 2.5rem;
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Cocora Chocolates</h1>
-  <p>Tap a chocolate to see it up close</p>
-</header>
+<div class="logo-wrap">
+  <img src="images/cocora-logo.jpg" alt="Cocora — The Saudi Touch of Chocolate Art">
+</div>
+<p class="tagline">Menu</p>
 
-<div class="grid" id="grid"></div>
+<nav class="category-nav">
+  <a href="#dragee">Dragee</a>
+  <a href="#bar">Bar</a>
+  <a href="#fingers">Fingers &amp; cigarettes</a>
+  <a href="#box">Box</a>
+  <a href="#flavors">Ganache &amp; praline</a>
+</nav>
+
+<main>
+
+  <section class="category" id="dragee">
+    <div class="category-header">
+      <h2>Dragee</h2>
+      <span class="ar">دراجيه</span>
+    </div>
+    <div class="grid" id="grid-dragee"></div>
+  </section>
+
+  <section class="category" id="bar">
+    <div class="category-header">
+      <h2>Bar</h2>
+      <span class="ar">بار</span>
+    </div>
+    <div class="grid" id="grid-bar"></div>
+  </section>
+
+  <section class="category" id="fingers">
+    <div class="category-header">
+      <h2>Fingers, cigarettes</h2>
+      <span class="ar">أصابع، رولات</span>
+    </div>
+    <div class="grid" id="grid-fingers"></div>
+  </section>
+
+  <section class="category" id="box">
+    <div class="category-header">
+      <h2>Box</h2>
+      <span class="ar">بوكس</span>
+    </div>
+    <div class="grid" id="grid-box"></div>
+  </section>
+
+  <section class="category" id="flavors">
+    <div class="category-header">
+      <h2>Ganache &amp; praline</h2>
+      <span class="ar">غانش وبرالين</span>
+    </div>
+    <div class="grid" id="grid-flavors"></div>
+  </section>
+
+</main>
+
+<footer>@cocora_sa</footer>
 
 <div class="overlay" id="overlay">
   <div class="detail-sheet">
@@ -190,94 +300,112 @@
     <div class="detail-body">
       <p class="detail-name" id="detailName"></p>
       <p class="detail-price" id="detailPrice"></p>
-      <p class="detail-desc" id="detailDesc"></p>
-      <p class="fillings-label">Fillings</p>
-      <p class="fillings-text" id="detailFillings"></p>
+      <p class="detail-allergy" id="detailAllergy"></p>
     </div>
   </div>
 </div>
 
 <script>
   /*
-    EDIT YOUR CHOCOLATES HERE.
-    - image: path to a photo file, e.g. "images/dark-sea-salt.jpg"
-      (put your photo files in an "images" folder next to this file)
-    - name, price, desc, fillings: plain text
-    Add or remove entries freely — the page updates automatically.
+    EDIT YOUR PRODUCTS HERE.
+    Each category array below is one section on the page.
+    "image" points to a photo in the images/ folder.
+    Replace category-*.jpg with individual product photos any time —
+    just update the image path per item once you have them.
   */
-  const chocolates = [
-    {
-      image: "images/placeholder.jpg",
-      name: "Dark sea salt",
-      price: "₱65",
-      desc: "70% single-origin dark chocolate shell, hand finished with flaked sea salt.",
-      fillings: "Salted caramel"
+
+  const categories = {
+    dragee: {
+      image: "images/category-dragee.jpg",
+      items: [
+        { name: "Chocolate Pecan Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
+        { name: "Chocolate Cashew Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
+        { name: "Chocolate Hazelnut Dragee", price: "60 SAR", allergy: "Milk, Nuts" },
+        { name: "Chocolate Almond Dragee", price: "60 SAR", allergy: "Milk, Nuts" }
+      ]
     },
-    {
-      image: "images/placeholder.jpg",
-      name: "Coconut cream",
-      price: "₱65",
-      desc: "Milk chocolate shell with toasted coconut on top.",
-      fillings: "Toasted coconut, white chocolate ganache"
+    bar: {
+      image: "images/category-bar.jpg",
+      items: [
+        { name: "Ghazela Pistachio Bar", price: "29 SAR", allergy: "Milk, Soya, Nuts" },
+        { name: "Chocolate Slices", price: "105 SAR", allergy: "Milk, Nuts, Peanuts" },
+        { name: "Chocolate Bar", price: "29 SAR", allergy: "Milk, Soya, Nuts" },
+        { name: "Chocolate Bar With Nuts", price: "29 SAR", allergy: "Milk, Nuts" }
+      ]
     },
-    {
-      image: "images/placeholder.jpg",
-      name: "Peanut crunch",
-      price: "₱60",
-      desc: "Milk chocolate shell, crushed peanuts on top.",
-      fillings: "Peanut praline, crushed roasted peanuts"
+    fingers: {
+      image: "images/category-fingers.jpg",
+      items: [
+        { name: "Chocolate Cigarettes (20 pc)", price: "49 SAR", allergy: "Milk" },
+        { name: "Chocolate Dentelle (15 pc)", price: "46 SAR", allergy: "Milk" },
+        { name: "Chocolate Fingers with Nuts & Dry Fruit", price: "33 SAR", allergy: "Milk, Nuts" }
+      ]
     },
-    {
-      image: "images/placeholder.jpg",
-      name: "Strawberry burst",
-      price: "₱70",
-      desc: "White chocolate shell with a freeze-dried strawberry garnish.",
-      fillings: "Strawberry compote"
-    },
-    {
-      image: "images/placeholder.jpg",
-      name: "Mocha swirl",
-      price: "₱70",
-      desc: "Dark chocolate shell with a coffee bean garnish.",
-      fillings: "Espresso ganache"
-    },
-    {
-      image: "images/placeholder.jpg",
-      name: "Orange zest",
-      price: "₱65",
-      desc: "Dark chocolate shell with candied orange peel on top.",
-      fillings: "Candied orange, dark chocolate ganache"
+    box: {
+      image: "images/category-box.jpg",
+      items: [
+        { name: "Najd Box (28 pc)", price: "173 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" },
+        { name: "Diriyah Box (18 pc)", price: "132 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" }
+      ]
     }
+  };
+
+  /*
+    Ganache & praline flavors — sold by the kilo, no individual photos yet.
+    Every item defaults to images/flavor-placeholder.jpg. To use a real photo
+    for one flavor, add an "image" field to that item, e.g.:
+      { name: "Earl grey", price: "400 SAR/kg", allergy: "Milk", image: "images/earl-grey.jpg" }
+    Items without their own "image" keep using the placeholder automatically.
+  */
+  const flavorPlaceholder = "images/flavor-placeholder.jpg";
+
+  const flavors = [
+    { name: "Spice ganache", price: "400 SAR/kg", allergy: "Milk" },
+    { name: "Earl grey", price: "400 SAR/kg", allergy: "Milk" },
+    { name: "Raspberry delight", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts" },
+    { name: "Tropical caramel", price: "400 SAR/kg", allergy: "Milk" },
+    { name: "Cinnamon crunchy speculaas", price: "400 SAR/kg", allergy: "Milk, Gluten, Soya" },
+    { name: "Espresso pecan praline", price: "400 SAR/kg", allergy: "Milk, Gluten, Nuts, Soya" },
+    { name: "Espresso & vanilla", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Pistachio & lemon", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts" },
+    { name: "Saudi coffee & cardamom", price: "400 SAR/kg", allergy: "Milk, Soya, Gluten" },
+    { name: "Oriental caramel fudge", price: "400 SAR/kg", allergy: "Nuts, Sulphites" },
+    { name: "Gianduja orange praline", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Dark chocolate wafer", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts, Soya" },
+    { name: "Milk chocolate wafer", price: "400 SAR/kg", allergy: "Milk, Soya, Gluten, Nuts" },
+    { name: "Truffle chocolate", price: "400 SAR/kg", allergy: "Dairy, Nuts" },
+    { name: "Dentelle", price: "450 SAR/kg", allergy: "Milk, Soya, Gluten" },
+    { name: "Crunchy mango & passion", price: "400 SAR/kg", allergy: "Milk, Gluten" },
+    { name: "Hazelnut gold rocher", price: "400 SAR/kg", allergy: "Dairy, Nuts" },
+    { name: "Chocolate rolls", price: "450 SAR/kg", allergy: "Milk, Soya, Gluten" },
+    { name: "Mix nut bar", price: "By piece only", allergy: "Milk, Nuts" },
+    { name: "Gianduia hazelnut bar", price: "By piece only", allergy: "Milk, Soya, Nuts" },
+    { name: "Ghazela pistachio bar", price: "By piece only", allergy: "Milk, Soya, Nuts" },
+    { name: "Chocolate slices with dried fruits", price: "400 SAR/kg", allergy: "Milk, dried fruit" },
+    { name: "Chocolate slices with pistachio", price: "400 SAR/kg", allergy: "Nuts" },
+    { name: "Chocolate slices with almonds", price: "400 SAR/kg", allergy: "Milk, Nuts, Almonds" },
+    { name: "Chocolate slices", price: "400 SAR/kg", allergy: "Milk" },
+    { name: "Pistachio fingers", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Dry berries fingers", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Chocolate almond dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Chocolate hazelnut dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Chocolate pecan dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
+    { name: "Chocolate cashew dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" }
   ];
 
-  const grid = document.getElementById('grid');
   const overlay = document.getElementById('overlay');
   const detailImg = document.getElementById('detailImg');
   const detailName = document.getElementById('detailName');
   const detailPrice = document.getElementById('detailPrice');
-  const detailDesc = document.getElementById('detailDesc');
-  const detailFillings = document.getElementById('detailFillings');
+  const detailAllergy = document.getElementById('detailAllergy');
   const closeBtn = document.getElementById('closeBtn');
 
-  chocolates.forEach((c, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <img class="card-img" src="${c.image}" alt="${c.name}" loading="lazy">
-      <p class="card-name">${c.name}</p>
-    `;
-    card.addEventListener('click', () => openDetail(i));
-    grid.appendChild(card);
-  });
-
-  function openDetail(i) {
-    const c = chocolates[i];
-    detailImg.src = c.image;
-    detailImg.alt = c.name;
-    detailName.textContent = c.name;
-    detailPrice.textContent = c.price;
-    detailDesc.textContent = c.desc;
-    detailFillings.textContent = c.fillings;
+  function openDetail(image, item) {
+    detailImg.src = image;
+    detailImg.alt = item.name;
+    detailName.textContent = item.name;
+    detailPrice.textContent = item.price;
+    detailAllergy.textContent = "Allergies: " + item.allergy;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -290,6 +418,40 @@
   closeBtn.addEventListener('click', closeDetail);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeDetail();
+  });
+
+  Object.keys(categories).forEach((key) => {
+    const cat = categories[key];
+    const grid = document.getElementById('grid-' + key);
+    cat.items.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img class="card-img" src="${cat.image}" alt="${item.name}" loading="lazy">
+        <div class="card-body">
+          <p class="card-name">${item.name}</p>
+          <p class="card-price">${item.price}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => openDetail(cat.image, item));
+      grid.appendChild(card);
+    });
+  });
+
+  const flavorGrid = document.getElementById('grid-flavors');
+  flavors.forEach((f) => {
+    const img = f.image || flavorPlaceholder;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img class="card-img" src="${img}" alt="${f.name}" loading="lazy">
+      <div class="card-body">
+        <p class="card-name">${f.name}</p>
+        <p class="card-unit">${f.price}</p>
+      </div>
+    `;
+    card.addEventListener('click', () => openDetail(img, f));
+    flavorGrid.appendChild(card);
   });
 </script>
 
