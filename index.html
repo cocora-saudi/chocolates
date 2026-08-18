@@ -276,6 +276,28 @@
     text-decoration: none;
   }
 
+  .map-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    margin: 6px 0;
+  }
+
+  .map-link svg {
+    width: 130px;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .map-link-label {
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
   .footer-credit {
     display: block;
     margin-top: 10px;
@@ -355,7 +377,19 @@
 <footer>
   <a href="https://www.instagram.com/cocora_sa/" target="_blank" rel="noopener" class="footer-link">@cocora_sa</a>
   <br>
-  <a href="https://share.google/o4NQ9drsjEEaIGIIy" target="_blank" rel="noopener" class="footer-link">Visit Us</a>
+  <a href="https://share.google/o4NQ9drsjEEaIGIIy" target="_blank" rel="noopener" class="map-link" aria-label="Visit Us — open location on map">
+    <svg viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="158" height="108" rx="14" fill="var(--burgundy-light)" stroke="var(--gold)" stroke-width="2"/>
+      <path d="M0 30 Q40 15 80 30 T160 30" stroke="var(--gold)" stroke-width="1.2" fill="none" opacity="0.45"/>
+      <path d="M0 55 Q45 70 90 55 T160 60" stroke="var(--gold)" stroke-width="1.2" fill="none" opacity="0.45"/>
+      <path d="M0 82 Q40 92 80 82 T160 85" stroke="var(--gold)" stroke-width="1.2" fill="none" opacity="0.45"/>
+      <path d="M35 0 Q40 40 30 80 T25 110" stroke="var(--gold)" stroke-width="1.2" fill="none" opacity="0.35"/>
+      <path d="M120 0 Q115 45 125 80 T130 110" stroke="var(--gold)" stroke-width="1.2" fill="none" opacity="0.35"/>
+      <path d="M80 34c-9 0-16 7-16 16 0 12 16 28 16 28s16-16 16-28c0-9-7-16-16-16z" fill="var(--gold)"/>
+      <circle cx="80" cy="50" r="6" fill="var(--burgundy)"/>
+    </svg>
+    <span class="map-link-label">Visit Us</span>
+  </a>
   <br>
   <span class="footer-credit">Design and Made by Medelo Software</span>
 </footer>
