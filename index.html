@@ -230,10 +230,16 @@
     padding-top: 12px;
   }
 
+  .order-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
   .order-btn {
     display: block;
     text-align: center;
-    margin-top: 16px;
     padding: 12px 16px;
     background: var(--burgundy);
     color: var(--cream);
@@ -349,7 +355,11 @@
       <p class="detail-price" id="detailPrice"></p>
       <p class="detail-desc" id="detailDesc"></p>
       <p class="detail-allergy" id="detailAllergy"></p>
-      <a class="order-btn" id="orderBtn" href="https://api.whatsapp.com/message/5D6Z5XVXBX2NG1" target="_blank" rel="noopener">For Orders Call/Message Cocora</a>
+      <div class="order-buttons">
+        <a class="order-btn" href="https://api.whatsapp.com/message/5D6Z5XVXBX2NG1" target="_blank" rel="noopener">For Orders Call/Message Cocora</a>
+        <a class="order-btn" href="https://thechefzco.app.link/HY7XI9PJH5b" target="_blank" rel="noopener">Order on The Chefz</a>
+        <a class="order-btn" href="https://jahez.go.link/jXMbc" target="_blank" rel="noopener">Order on Jahez</a>
+      </div>
     </div>
   </div>
 </div>
