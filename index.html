@@ -230,12 +230,37 @@
     padding-top: 12px;
   }
 
+  .order-btn {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--burgundy);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+  }
+
   footer {
     text-align: center;
     padding: 1.5rem 1rem 2.5rem;
     font-size: 0.8rem;
     color: var(--gold);
     letter-spacing: 0.05em;
+  }
+
+  .footer-link {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .footer-credit {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
   }
 </style>
 </head>
@@ -252,6 +277,7 @@
   <a href="#fingers">Fingers &amp; cigarettes</a>
   <a href="#box">Box</a>
   <a href="#flavors">Ganache &amp; praline</a>
+  <a href="#specials">Cocora Specials</a>
 </nav>
 
 <main>
@@ -288,6 +314,14 @@
     <div class="grid" id="grid-box"></div>
   </section>
 
+  <section class="category" id="specials">
+    <div class="category-header">
+      <h2>Cocora Specials</h2>
+      <span class="ar">عروض كوكورا</span>
+    </div>
+    <div class="grid" id="grid-specials"></div>
+  </section>
+
   <section class="category" id="flavors">
     <div class="category-header">
       <h2>Ganache &amp; praline</h2>
@@ -298,7 +332,13 @@
 
 </main>
 
-<footer>@cocora_sa</footer>
+<footer>
+  <a href="https://www.instagram.com/cocora_sa/" target="_blank" rel="noopener" class="footer-link">@cocora_sa</a>
+  <br>
+  <a href="https://share.google/o4NQ9drsjEEaIGIIy" target="_blank" rel="noopener" class="footer-link">Visit Us</a>
+  <br>
+  <span class="footer-credit">Design and Made by Medelo Software</span>
+</footer>
 
 <div class="overlay" id="overlay">
   <div class="detail-sheet">
@@ -309,6 +349,7 @@
       <p class="detail-price" id="detailPrice"></p>
       <p class="detail-desc" id="detailDesc"></p>
       <p class="detail-allergy" id="detailAllergy"></p>
+      <a class="order-btn" id="orderBtn" href="https://api.whatsapp.com/message/5D6Z5XVXBX2NG1" target="_blank" rel="noopener">For Orders Call/Message Cocora</a>
     </div>
   </div>
 </div>
@@ -354,6 +395,13 @@
       items: [
         { name: "Najd Box (28 pc)", price: "173 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" },
         { name: "Diriyah Box (18 pc)", price: "132 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" }
+      ]
+    },
+    specials: {
+      image: "images/category-specials.jpg",
+      items: [
+        { name: "Salted Biscuits", price: "220 SAR/kg" },
+        { name: "Stuffed Dates", price: "190 SAR/kg" }
       ]
     }
   };
@@ -416,7 +464,8 @@
     detailPrice.textContent = item.price;
     detailDesc.textContent = item.description || "";
     detailDesc.style.display = item.description ? "block" : "none";
-    detailAllergy.textContent = "Allergies: " + item.allergy;
+    detailAllergy.textContent = item.allergy ? "Allergies: " + item.allergy : "";
+    detailAllergy.style.display = item.allergy ? "block" : "none";
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
