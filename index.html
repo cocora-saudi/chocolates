@@ -434,9 +434,9 @@
       image: "images/category-specials.jpg",
       whatsappOnly: true,
       items: [
-        { name: "Salted Biscuits", price: "220 SAR/kg" },
-        { name: "Stuffed Dates", price: "190 SAR/kg" },
-        { name: "Bridal Sweets", price: "For Price Inquiry, please call or message WhatsApp" }
+        { name: "Salted Biscuits", price: "220 SAR/kg", image: "images/salted-biscuits.jpg" },
+        { name: "Stuffed Dates", price: "190 SAR/kg", image: "images/stuffed-dates.jpg" },
+        { name: "Wedding Sweets", price: "For Price Inquiry, please call or message WhatsApp", image: "images/wedding-sweets.jpg" }
       ]
     }
   };
@@ -543,16 +543,17 @@
     const cat = categories[key];
     const grid = document.getElementById('grid-' + key);
     cat.items.forEach((item) => {
+      const img = item.image || cat.image;
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <img class="card-img" src="${cat.image}" alt="${item.name}" loading="lazy">
+        <img class="card-img" src="${img}" alt="${item.name}" loading="lazy">
         <div class="card-body">
           <p class="card-name">${item.name}</p>
           <p class="card-price">${item.price}</p>
         </div>
       `;
-      card.addEventListener('click', () => openDetail(cat.image, item, !!cat.whatsappOnly));
+      card.addEventListener('click', () => openDetail(img, item, !!cat.whatsappOnly));
       grid.appendChild(card);
     });
   });
