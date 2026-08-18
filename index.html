@@ -157,6 +157,7 @@
   .overlay.open { display: flex; }
 
   .detail-sheet {
+    position: relative;
     background: var(--card-bg);
     width: 100%;
     max-width: 480px;
@@ -186,19 +187,21 @@
 
   .close-btn {
     position: absolute;
-    top: -44px;
-    right: 16px;
-    width: 36px;
-    height: 36px;
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.92);
     border: none;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--burgundy);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    z-index: 10;
   }
 
   .detail-name {
@@ -359,7 +362,7 @@
 
 <div class="overlay" id="overlay">
   <div class="detail-sheet">
-    <button class="close-btn" id="closeBtn" aria-label="Close">✕</button>
+    <button class="close-btn" id="closeBtn" aria-label="Back to menu">←</button>
     <img class="detail-img" id="detailImg" alt="">
     <div class="detail-body">
       <p class="detail-name" id="detailName"></p>
@@ -428,14 +431,14 @@
       ]
     },
     specials: {
-  image: "images/category-specials.jpg",
-  whatsappOnly: true,
-  items: [
-    { name: "Salted Biscuits", price: "220 SAR/kg", image: "images/salted-biscuits.jpg" },
-    { name: "Stuffed Dates", price: "190 SAR/kg", image: "images/stuffed-dates.jpg" },
-    { name: "Wedding Sweets", price: "For Price Inquiry, please call or message WhatsApp", image: "images/wedding-sweets.jpg" }
-  ]
-}
+      image: "images/category-specials.jpg",
+      whatsappOnly: true,
+      items: [
+        { name: "Salted Biscuits", price: "220 SAR/kg" },
+        { name: "Stuffed Dates", price: "190 SAR/kg" },
+        { name: "Bridal Sweets", price: "For Price Inquiry, please call or message WhatsApp" }
+      ]
+    }
   };
 
   /*
@@ -515,6 +518,26 @@
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeDetail();
   });
+
+  const detailSheet = document.querySelector('.detail-sheet');
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  detailSheet.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  detailSheet.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const isMostlyHorizontal = Math.abs(deltaX) > Math.abs(deltaY) * 1.5;
+    if (deltaX > 80 && isMostlyHorizontal) {
+      closeDetail();
+    }
+  }, { passive: true });
 
   Object.keys(categories).forEach((key) => {
     const cat = categories[key];
