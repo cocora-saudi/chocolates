@@ -106,10 +106,15 @@
   }
 
   .card {
+    position: relative;
     background: var(--card-bg);
     border-radius: 14px;
     overflow: hidden;
     cursor: pointer;
+  }
+
+  .card-img-wrap {
+    position: relative;
   }
 
   .card-img {
@@ -141,6 +146,45 @@
     font-size: 0.7rem;
     color: var(--text-secondary);
     margin: 0;
+  }
+
+  /* Allergen badge + tooltip on card image */
+  .allergen-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(20, 8, 12, 0.82);
+    color: var(--gold);
+    border: 1px solid rgba(201,161,90,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 5;
+  }
+
+  .allergen-tooltip {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    background: rgba(20, 8, 12, 0.92);
+    color: var(--cream);
+    font-size: 0.68rem;
+    line-height: 1.35;
+    padding: 6px 8px;
+    border-radius: 8px;
+    z-index: 6;
+    display: none;
+  }
+
+  .allergen-tooltip.show {
+    display: block;
   }
 
   /* Detail overlay */
@@ -428,6 +472,9 @@
     "image" points to a photo in the images/ folder.
     Replace category-*.jpg with individual product photos any time —
     just update the image path per item once you have them.
+    "allergy" (if present) now also shows as a small tap-to-reveal
+    badge directly on the product photo, in addition to the full
+    detail sheet.
   */
 
   const categories = {
@@ -443,34 +490,33 @@
     bar: {
       image: "images/category-bar.jpg",
       items: [
-        
-        { name: "Chocolate Slices", price: "92 SAR", allergy: "Milk, Nuts, Peanuts" },
-        { name: "Chocolate Bar", price: "20 SAR", allergy: "Milk, Soya, Nuts" },
-        { name: "Chocolate Bar With Nuts", price: "20 SAR", allergy: "Milk, Nuts" }
+        { name: "Chocolate Slices", price: "92 SAR", description: "Thin, elegant chocolate slices finished by hand.", allergy: "Milk, Nuts, Peanuts" },
+        { name: "Chocolate Bar", price: "20 SAR", description: "Classic smooth chocolate bar, Cocora's house recipe.", allergy: "Milk, Soya, Nuts" },
+        { name: "Chocolate Bar With Nuts", price: "20 SAR", description: "Our house chocolate bar studded with mixed nuts.", allergy: "Milk, Nuts" }
       ]
     },
     fingers: {
       image: "images/category-fingers.jpg",
       items: [
-        { name: "Chocolate Cigarettes (20 pc)", price: "49 SAR", allergy: "Milk" },
-        { name: "Chocolate Dentelle (15 pc)", price: "40 SAR", allergy: "Milk" },
-        { name: "Chocolate Fingers with Nuts & Dry Fruit", price: "20 SAR", allergy: "Milk, Nuts" }
+        { name: "Chocolate Cigarettes (20 pc)", price: "49 SAR", description: "Delicate rolled chocolate cigarettes, 20 pieces per box.", allergy: "Milk" },
+        { name: "Chocolate Dentelle (15 pc)", price: "40 SAR", description: "Thin, lace-like chocolate dentelle, 15 pieces per box.", allergy: "Milk" },
+        { name: "Chocolate Fingers with Nuts & Dry Fruit", price: "20 SAR", description: "Chocolate fingers layered with nuts and dried fruit.", allergy: "Milk, Nuts" }
       ]
     },
     box: {
       image: "images/category-box.jpg",
       items: [
-        { name: "Najd Box (28 pc)", price: "173 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" },
-        { name: "Diriyah Box (18 pc)", price: "132 SAR", allergy: "Milk, Nuts, Peanuts, Gluten" }
+        { name: "Najd Box (28 pc)", price: "173 SAR", description: "An assorted 28-piece selection from across our collection.", allergy: "Milk, Nuts, Peanuts, Gluten" },
+        { name: "Diriyah Box (18 pc)", price: "132 SAR", description: "An assorted 18-piece selection from across our collection.", allergy: "Milk, Nuts, Peanuts, Gluten" }
       ]
     },
     specials: {
       image: "images/category-specials.jpg",
       whatsappOnly: true,
       items: [
-        { name: "Salted Biscuits", price: "220 SAR/kg", image: "images/salted-biscuits.jpeg" },
-        { name: "Stuffed Dates", price: "190 SAR/kg", image: "images/stuffed-dates.jpeg" },
-        { name: "Wedding Sweets", price: "For Price Inquiry, please call or message WhatsApp", image: "images/wedding-sweets.jpeg" }
+        { name: "Salted Biscuits", price: "220 SAR/kg", description: "Buttery salted biscuits, made fresh to order.", image: "images/salted-biscuits.jpeg" },
+        { name: "Stuffed Dates", price: "190 SAR/kg", description: "Premium dates stuffed with a Cocora filling.", image: "images/stuffed-dates.jpeg" },
+        { name: "Wedding Sweets", price: "For Price Inquiry, please call or message WhatsApp", description: "Custom sweet arrangements for weddings and events.", image: "images/wedding-sweets.jpeg" }
       ]
     }
   };
@@ -485,36 +531,36 @@
   const flavorPlaceholder = "images/flavor-placeholder.jpg";
 
   const flavors = [
-    { name: "Spice ganache", price: "400 SAR/kg", allergy: "Milk" },
-    { name: "Earl grey", price: "400 SAR/kg", allergy: "Milk" },
-    { name: "Raspberry delight", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts" },
-    { name: "Tropical caramel", price: "400 SAR/kg", allergy: "Milk" },
-    { name: "Cinnamon crunchy speculaas", price: "400 SAR/kg", allergy: "Milk, Gluten, Soya" },
-    { name: "Espresso pecan praline", price: "400 SAR/kg", allergy: "Milk, Gluten, Nuts, Soya" },
-    { name: "Espresso & vanilla", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Pistachio & lemon", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts" },
-    { name: "Saudi coffee & cardamom", price: "400 SAR/kg", allergy: "Milk, Soya, Gluten" },
-    { name: "Oriental caramel fudge", price: "400 SAR/kg", allergy: "Nuts, Sulphites" },
-    { name: "Gianduja orange praline", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Dark chocolate wafer", price: "400 SAR/kg", allergy: "Milk, Eggs, Gluten, Nuts, Soya" },
-    { name: "Milk chocolate wafer", price: "400 SAR/kg", allergy: "Milk, Soya, Gluten, Nuts" },
-    { name: "Truffle chocolate", price: "400 SAR/kg", allergy: "Dairy, Nuts" },
-    { name: "Dentelle", price: "450 SAR/kg", allergy: "Milk, Soya, Gluten" },
-    { name: "Crunchy mango & passion", price: "400 SAR/kg", allergy: "Milk, Gluten", image: "images/mango-crunchy.png"}, 
-    { name: "Hazelnut gold rocher", price: "400 SAR/kg", allergy: "Dairy, Nuts" },
-    { name: "Chocolate rolls", price: "450 SAR/kg", allergy: "Milk, Soya, Gluten" },
-    { name: "Mix nut bar", price: "By piece only", allergy: "Milk, Nuts" },
-    { name: "Gianduia hazelnut bar", price: "By piece only", allergy: "Milk, Soya, Nuts" },
-    { name: "Chocolate slices with dried fruits", price: "400 SAR/kg", allergy: "Milk, dried fruit" },
-    { name: "Chocolate slices with pistachio", price: "400 SAR/kg", allergy: "Nuts" },
-    { name: "Chocolate slices with almonds", price: "400 SAR/kg", allergy: "Milk, Nuts, Almonds" },
-    { name: "Chocolate slices", price: "400 SAR/kg", allergy: "Milk", image: "images/slice-camel.png" },
-    { name: "Pistachio fingers", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Dry berries fingers", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Chocolate almond dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Chocolate hazelnut dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Chocolate pecan dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" },
-    { name: "Chocolate cashew dragee", price: "400 SAR/kg", allergy: "Milk, Nuts" }
+    { name: "Spice ganache", price: "400 SAR/kg", description: "A warmly spiced ganache blended with rich dark chocolate.", allergy: "Milk" },
+    { name: "Earl grey", price: "400 SAR/kg", description: "A fragrant Earl Grey tea-infused ganache.", allergy: "Milk" },
+    { name: "Raspberry delight", price: "400 SAR/kg", description: "A bright raspberry ganache balanced with smooth chocolate.", allergy: "Milk, Eggs, Gluten, Nuts" },
+    { name: "Tropical caramel", price: "400 SAR/kg", description: "Soft caramel with a tropical fruit twist.", allergy: "Milk" },
+    { name: "Cinnamon crunchy speculaas", price: "400 SAR/kg", description: "Cinnamon speculaas praline with a crunchy biscuit texture.", allergy: "Milk, Gluten, Soya" },
+    { name: "Espresso pecan praline", price: "400 SAR/kg", description: "Roasted pecan praline layered with bold espresso.", allergy: "Milk, Gluten, Nuts, Soya" },
+    { name: "Espresso & vanilla", price: "400 SAR/kg", description: "Smooth espresso ganache paired with vanilla.", allergy: "Milk, Nuts" },
+    { name: "Pistachio & lemon", price: "400 SAR/kg", description: "Pistachio praline lifted with a touch of fresh lemon.", allergy: "Milk, Eggs, Gluten, Nuts" },
+    { name: "Saudi coffee & cardamom", price: "400 SAR/kg", description: "A tribute to Saudi coffee, spiced with cardamom.", allergy: "Milk, Soya, Gluten" },
+    { name: "Oriental caramel fudge", price: "400 SAR/kg", description: "A rich fudge with oriental caramel notes.", allergy: "Nuts, Sulphites" },
+    { name: "Gianduja orange praline", price: "400 SAR/kg", description: "Classic gianduja praline brightened with orange.", allergy: "Milk, Nuts" },
+    { name: "Dark chocolate wafer", price: "400 SAR/kg", description: "Crisp wafer layers coated in dark chocolate.", allergy: "Milk, Eggs, Gluten, Nuts, Soya" },
+    { name: "Milk chocolate wafer", price: "400 SAR/kg", description: "Crisp wafer layers coated in milk chocolate.", allergy: "Milk, Soya, Gluten, Nuts" },
+    { name: "Truffle chocolate", price: "400 SAR/kg", description: "A silky chocolate truffle with a soft, melting center.", allergy: "Dairy, Nuts" },
+    { name: "Dentelle", price: "450 SAR/kg", description: "Thin, lace-like chocolate dentelle in a delicate crisp form.", allergy: "Milk, Soya, Gluten" },
+    { name: "Crunchy mango & passion", price: "400 SAR/kg", description: "A crunchy praline layered with mango and passion fruit.", allergy: "Milk, Gluten", image: "images/mango-crunchy.png" },
+    { name: "Hazelnut gold rocher", price: "400 SAR/kg", description: "A golden hazelnut rocher with a crunchy chocolate shell.", allergy: "Dairy, Nuts" },
+    { name: "Chocolate rolls", price: "450 SAR/kg", description: "Delicate rolled chocolate, finished by hand.", allergy: "Milk, Soya, Gluten" },
+    { name: "Mix nut bar", price: "By piece only", description: "A chocolate bar loaded with an assortment of nuts.", allergy: "Milk, Nuts" },
+    { name: "Gianduia hazelnut bar", price: "By piece only", description: "A gianduja hazelnut chocolate bar, rich and smooth.", allergy: "Milk, Soya, Nuts" },
+    { name: "Chocolate slices with dried fruits", price: "400 SAR/kg", description: "Thin chocolate slices studded with dried fruits.", allergy: "Milk, dried fruit" },
+    { name: "Chocolate slices with pistachio", price: "400 SAR/kg", description: "Thin chocolate slices topped with pistachio.", allergy: "Nuts" },
+    { name: "Chocolate slices with almonds", price: "400 SAR/kg", description: "Thin chocolate slices topped with roasted almonds.", allergy: "Milk, Nuts, Almonds" },
+    { name: "Chocolate slices", price: "400 SAR/kg", description: "Thin, elegant chocolate slices, Cocora's signature cut.", allergy: "Milk", image: "images/slice-camel.png" },
+    { name: "Pistachio fingers", price: "400 SAR/kg", description: "Chocolate fingers finished with pistachio.", allergy: "Milk, Nuts" },
+    { name: "Dry berries fingers", price: "400 SAR/kg", description: "Chocolate fingers layered with dried berries.", allergy: "Milk, Nuts" },
+    { name: "Chocolate almond dragee", price: "400 SAR/kg", description: "Crunchy roasted almonds dipped in smooth chocolate.", allergy: "Milk, Nuts" },
+    { name: "Chocolate hazelnut dragee", price: "400 SAR/kg", description: "Toasted hazelnuts finished with a crisp chocolate coating.", allergy: "Milk, Nuts" },
+    { name: "Chocolate pecan dragee", price: "400 SAR/kg", description: "Roasted pecans wrapped in a smooth chocolate shell.", allergy: "Milk, Nuts" },
+    { name: "Chocolate cashew dragee", price: "400 SAR/kg", description: "Whole roasted cashews coated in rich chocolate.", allergy: "Milk, Nuts" }
   ];
 
   const overlay = document.getElementById('overlay');
@@ -572,21 +618,51 @@
     }
   }, { passive: true });
 
+  // Close any open allergen tooltip when tapping elsewhere on the page
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.allergen-tooltip.show').forEach((el) => el.classList.remove('show'));
+  });
+
+  function buildCard(img, item, allergy, priceLabel, onOpen) {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const hasAllergy = !!allergy;
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img class="card-img" src="${img}" alt="${item.name}" loading="lazy">
+        ${hasAllergy ? '<button type="button" class="allergen-badge" aria-label="Show allergens">⚠</button>' : ''}
+        ${hasAllergy ? `<div class="allergen-tooltip">Allergies: ${allergy}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <p class="card-name">${item.name}</p>
+        ${priceLabel}
+      </div>
+    `;
+
+    if (hasAllergy) {
+      const badge = card.querySelector('.allergen-badge');
+      const tooltip = card.querySelector('.allergen-tooltip');
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.allergen-tooltip.show').forEach((el) => {
+          if (el !== tooltip) el.classList.remove('show');
+        });
+        tooltip.classList.toggle('show');
+      });
+    }
+
+    card.addEventListener('click', onOpen);
+    return card;
+  }
+
   Object.keys(categories).forEach((key) => {
     const cat = categories[key];
     const grid = document.getElementById('grid-' + key);
     cat.items.forEach((item) => {
       const img = item.image || cat.image;
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img class="card-img" src="${img}" alt="${item.name}" loading="lazy">
-        <div class="card-body">
-          <p class="card-name">${item.name}</p>
-          <p class="card-price">${item.price}</p>
-        </div>
-      `;
-      card.addEventListener('click', () => openDetail(img, item, !!cat.whatsappOnly));
+      const priceLabel = `<p class="card-price">${item.price}</p>`;
+      const card = buildCard(img, item, item.allergy, priceLabel, () => openDetail(img, item, !!cat.whatsappOnly));
       grid.appendChild(card);
     });
   });
@@ -594,16 +670,8 @@
   const flavorGrid = document.getElementById('grid-flavors');
   flavors.forEach((f) => {
     const img = f.image || flavorPlaceholder;
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <img class="card-img" src="${img}" alt="${f.name}" loading="lazy">
-      <div class="card-body">
-        <p class="card-name">${f.name}</p>
-        <p class="card-unit">${f.price}</p>
-      </div>
-    `;
-    card.addEventListener('click', () => openDetail(img, f, false));
+    const priceLabel = `<p class="card-unit">${f.price}</p>`;
+    const card = buildCard(img, f, f.allergy, priceLabel, () => openDetail(img, f, false));
     flavorGrid.appendChild(card);
   });
 </script>
