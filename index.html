@@ -148,7 +148,7 @@
     margin: 0;
   }
 
-  /* Allergen badge + tooltip on card image */
+  /* Allergen sign — hidden until the product image is tapped */
   .allergen-badge {
     position: absolute;
     top: 8px;
@@ -159,7 +159,7 @@
     background: rgba(20, 8, 12, 0.82);
     color: var(--gold);
     border: 1px solid rgba(201,161,90,0.5);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     font-size: 0.85rem;
@@ -168,23 +168,8 @@
     z-index: 5;
   }
 
-  .allergen-tooltip {
-    position: absolute;
-    left: 8px;
-    right: 8px;
-    bottom: 8px;
-    background: rgba(20, 8, 12, 0.92);
-    color: var(--cream);
-    font-size: 0.68rem;
-    line-height: 1.35;
-    padding: 6px 8px;
-    border-radius: 8px;
-    z-index: 6;
-    display: none;
-  }
-
-  .allergen-tooltip.show {
-    display: block;
+  .allergen-badge.show {
+    display: flex;
   }
 
   /* Detail overlay */
@@ -618,11 +603,6 @@
     }
   }, { passive: true });
 
-  // Close any open allergen tooltip when tapping elsewhere on the page
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.allergen-tooltip.show').forEach((el) => el.classList.remove('show'));
-  });
-
   function buildCard(img, item, allergy, priceLabel, onOpen) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -632,7 +612,6 @@
       <div class="card-img-wrap">
         <img class="card-img" src="${img}" alt="${item.name}" loading="lazy">
         ${hasAllergy ? '<button type="button" class="allergen-badge" aria-label="Show allergens">⚠</button>' : ''}
-        ${hasAllergy ? `<div class="allergen-tooltip">Allergies: ${allergy}</div>` : ''}
       </div>
       <div class="card-body">
         <p class="card-name">${item.name}</p>
@@ -641,14 +620,22 @@
     `;
 
     if (hasAllergy) {
+      const image = card.querySelector('.card-img');
       const badge = card.querySelector('.allergen-badge');
-      const tooltip = card.querySelector('.allergen-tooltip');
+
+      // First tap on the image reveals the sign instead of opening the detail sheet.
+      image.addEventListener('click', (e) => {
+        if (!badge.classList.contains('show')) {
+          e.stopPropagation();
+          badge.classList.add('show');
+        }
+        // Once revealed, a further tap on the image falls through to onOpen below.
+      });
+
+      // Tapping the sign itself opens the full detail sheet (allergen text included).
       badge.addEventListener('click', (e) => {
         e.stopPropagation();
-        document.querySelectorAll('.allergen-tooltip.show').forEach((el) => {
-          if (el !== tooltip) el.classList.remove('show');
-        });
-        tooltip.classList.toggle('show');
+        onOpen();
       });
     }
 
